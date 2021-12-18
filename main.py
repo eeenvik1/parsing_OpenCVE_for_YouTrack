@@ -109,9 +109,9 @@ def get_cve_data(cve):
 {% endif %}
     """
 
-    YOU_TRACK_PROJECT_ID = 6
-    YOU_TRACK_BASE_URL = 7
-    URL = 8
+    YOU_TRACK_PROJECT_ID = config.get("YOU_TRACK_PROJECT_ID")
+    YOU_TRACK_BASE_URL = config.get("YOU_TRACK_BASE_URL")
+    URL = config.get("YOUR_URL2")
     pattern = ['Stack-based buffer overflow', 'Arbitrary command execution', 'Obtain sensitive information', 'Local privilege escalation', 'Security Feature Bypass', 'Out-of-bounds read', 'Out of bounds read', 'Denial of service', 'Denial-of-service', 'Execute arbitrary code', 'Expose the credentials', 'Cross-site scripting (XSS)', 'Privilege escalation', 'Reflective XSS Vulnerability', 'Execution of arbitrary programs', 'Server-side request forgery (SSRF)', 'Stack overflow', 'Execute arbitrary commands', 'Obtain highly sensitive information', 'Bypass security', 'Remote Code Execution', 'Memory Corruption', 'Arbitrary code execution', 'CSV Injection', 'Heap corruption', 'Out of bounds memory access', 'Sandbox escape', 'NULL pointer dereference', 'Remote Code Execution']
 
     r = nvdlib.getCVE(cve, cpe_dict=False)
@@ -202,7 +202,7 @@ def get_cve_data(cve):
     message = jinja2.Template(template).render(d=data)
 
 #check for product_vendor-----------------------------------------------------------------------------------------------
-    URL_get_products = 9
+    URL_get_products = config.get("URL_GET_PRODUCTS")
     headers = {
         "Accept": "application/json",
         "Authorization": "Bearer {}".format(YOU_TRACK_TOKEN),
@@ -232,7 +232,7 @@ def get_cve_data(cve):
         requests.post(URL_get_products, headers=headers, json=payload)
 
 # check for versions----------------------------------------------------------------------------------------------------
-    URL_get_vetsions = 10
+    URL_get_vetsions = config.get("URL_GET_VERSIONS")
     headers = {
         "Accept": "application/json",
         "Authorization": "Bearer {}".format(YOU_TRACK_TOKEN),
@@ -300,7 +300,7 @@ def get_cve_data(cve):
 
 if __name__ == '__main__':
     # MAIN
-    URL = 11
+    URL = config.get("MAIN_URL")
     headers = {
         "Accept": "application/json",
         "Authorization": "Bearer {}".format(YOU_TRACK_TOKEN),
@@ -331,3 +331,4 @@ if __name__ == '__main__':
 
     # DEBUG
     #get_cve_data('CVE-2021-43808')
+    
