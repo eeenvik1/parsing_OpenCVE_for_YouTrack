@@ -43,7 +43,7 @@ def parsing_opencve():
 
     # Get new CVE
     cve_line = []
-    for page_num in range(1,10):
+    for page_num in range(1, 10): #pagination
         pagination = f'https://www.opencve.io/?page={page_num}'
         resp = s.get(pagination)
         parse = BeautifulSoup(resp.text, 'lxml')
