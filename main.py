@@ -108,7 +108,7 @@ def get_cve_data(cve):
 
     cve_cpe_nodes = r.configurations.nodes
     cpe_nodes = ast.literal_eval(str(r.configurations))
-    score = str(r.v3score) + " - "
+    score = r.v3score
     links = []
     exploit_links = []
     links.append(r.url)
@@ -277,6 +277,12 @@ def get_cve_data(cve):
                 "$type": "MultiEnumIssueCustomField",
                 "value": versions
             },
+            {
+                "name": "CVSS Score",
+                "$type": "SimpleIssueCustomField",
+                "value": score
+
+            }
         ]
     }
     #print(request_payload) #DEBUG
