@@ -43,10 +43,14 @@ def parsing_opencve():
 
     # Get new CVE
     cve_line = []
-    parse = BeautifulSoup(login.text, 'lxml')
-    for cve in parse.find_all('h3', class_='timeline-header'):
-        if 'is a new CVE' in cve.text:
-            cve_line.append(cve.text.replace(' is a new CVE', ''))
+    for page_num in range(1,10):
+        pagination = f'https://www.opencve.io/?page={page_num}'
+        resp = s.get(pagination)
+        parse = BeautifulSoup(resp.text, 'lxml')
+        for cve in parse.find_all('h3', class_='timeline-header'):
+            index = cve.text.find('has changed')
+            if index == -1:
+                cve_line.append(cve.text.replace(' is a new CVE', ''))
     return cve_line
 
 
