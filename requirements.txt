@@ -1,0 +1,7 @@
+jinja2
+requests
+bs4
+urllib3
+cpe
+nvdlib
+ast
