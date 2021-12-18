@@ -51,7 +51,12 @@ def parsing_opencve():
             index = cve.text.find('has changed')
             if index == -1:
                 cve_line.append(cve.text.replace(' is a new CVE', ''))
-    return cve_line
+                
+    cve_line_no_replic = []
+    for item in cve_line:
+        if item not in cve_line_no_replic:
+            cve_line_no_replic.append(item)
+    return cve_line_no_replic
 
 
 def get_cve_data(cve):
@@ -326,9 +331,3 @@ if __name__ == '__main__':
 
     # DEBUG
     #get_cve_data('CVE-2021-43808')
-
-
-
-
-
-
