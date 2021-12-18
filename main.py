@@ -6,17 +6,18 @@ import urllib3
 from cpe import CPE
 import nvdlib
 import ast
-
+from dotenv import dotenv_values
+config = dotenv_values(".env")
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-YOU_TRACK_TOKEN = 1
+YOU_TRACK_TOKEN = config.get("YOU_TRACK_TOKEN")
 
 
 def parsing_opencve():
-    URL1 = 2
-    URL = 3
-    USERNAME = 4
-    PASSWORD = 5
+    URL1 = config.get("URL1_VAL")
+    URL = config.get("URL_VAL")
+    USERNAME = config.get("USERNAME_VAL")
+    PASSWORD = config.get("PASSWORD_VAL")
     csrf_token = ''
     s = requests.Session()
     response = s.get(URL1)
