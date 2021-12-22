@@ -6,3 +6,4 @@ cpe
 nvdlib
 ast
 dotenv
+lxml
