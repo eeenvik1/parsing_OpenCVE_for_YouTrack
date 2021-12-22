@@ -106,8 +106,17 @@ def get_cve_data(cve, id):
     YOU_TRACK_PROJECT_ID = config.get("YOU_TRACK_PROJECT_ID")
     YOU_TRACK_BASE_URL = config.get("YOU_TRACK_BASE_URL")
     URL = config.get("YOUR_URL2")
-    pattern = ['Stack-based buffer overflow', 'Arbitrary command execution', 'Obtain sensitive information', 'Local privilege escalation', 'Security Feature Bypass', 'Out-of-bounds read', 'Out of bounds read', 'Denial of service', 'Denial-of-service', 'Execute arbitrary code', 'Expose the credentials', 'Cross-site scripting (XSS)', 'Privilege escalation', 'Reflective XSS Vulnerability', 'Execution of arbitrary programs', 'Server-side request forgery (SSRF)', 'Stack overflow', 'Execute arbitrary commands', 'Obtain highly sensitive information', 'Bypass security', 'Remote Code Execution', 'Memory Corruption', 'Arbitrary code execution', 'CSV Injection', 'Heap corruption', 'Out of bounds memory access', 'Sandbox escape', 'NULL pointer dereference', 'Remote Code Execution']
-
+    pattern = ['Stack-based buffer overflow', 'Arbitrary command execution', 'Obtain sensitive information',
+               'Local privilege escalation', 'Security Feature Bypass', 'Out-of-bounds read', 'Out of bounds read',
+               'Denial of service', 'Denial-of-service', 'Execute arbitrary code', 'Expose the credentials',
+               'Cross-site scripting (XSS)', 'Privilege escalation', 'Reflective XSS Vulnerability',
+               'Execution of arbitrary programs', 'Server-side request forgery (SSRF)', 'Stack overflow',
+               'Execute arbitrary commands', 'Obtain highly sensitive information', 'Bypass security',
+               'Remote Code Execution', 'Memory Corruption', 'Arbitrary code execution', 'CSV Injection',
+               'Heap corruption', 'Out of bounds memory access', 'Sandbox escape', 'NULL pointer dereference',
+               'Remote Code Execution', 'RCE', 'Authentication Error', 'Use-After-Free', 'Use After Free',
+               'Corrupt Memory', 'Execute Untrusted Code', 'Run Arbitrary Code']
+    
     try:
         r = nvdlib.getCVE(cve, cpe_dict=False)
         cve_cpe_nodes = r.configurations.nodes
