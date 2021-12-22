@@ -47,3 +47,6 @@ python3 main.py
 0 * * * * cd parsing_opencve && python3 parsing_opencve/main.py 
 ```
 
+## Example
+Пример работы скрипта main.py
+![alt text](https://github.com/eeenvik1/parsing_OpenCVE_for_YouTrack/blob/main/exmple_youtrack(main.py).png?raw=true)
