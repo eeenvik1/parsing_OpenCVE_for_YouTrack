@@ -33,13 +33,14 @@ URL_GET_VERSIONS = '<URL_GET_VERSIONS>'
 MAIN_URL = "<MAIN_URL>'
 ```
 
+Запуск скрипта
 ```
 python3 main.py
 ```
 
 
 Для автоматической работы скрипта следует использовать `cron`
-Например запуск скрипта каждый час:
+Например запуск скрипта каждый час
 ```
 0 * * * * cd parsing_opencve && python3 parsing_opencve/main.py 
 ```
