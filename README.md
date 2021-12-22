@@ -1,8 +1,12 @@
 # Description
-Скрипт позволяет заводить задачи в Панель мониторинга YouTrack на основе парсинга сайта OpenCVE
+Скрипт для парсинга сайта OpenCVE и работы в YouTrack
+`main.py` - основной скрипт, который заводит задачи в Панель мониторинга YouTrack
+`remove_repetitions.py` - скрипт, который удаляет повторяющиеся задачи
+`changing_issues.py` - скрипт, который обновляет задачи на основе парсинга сайта OpenCVE
 
 ## Install
-Для установки запустить `pip3 install -r requirements.txt`
+Для установки запустить 
+```pip3 install -r requirements.txt```
 
 ## Usage
 Перед началом работы необходимо создать файл `.env` и добавить в него необходимые ссылки и креды.
@@ -28,6 +32,15 @@ URL_GET_PRODUCTS = '<URL_GET_PRODUCTS>'
 URL_GET_VERSIONS = '<URL_GET_VERSIONS>'
 MAIN_URL = "<MAIN_URL>'
 ```
- 
+
+```
+python3 main.py
+```
+
 
 Для автоматической работы скрипта следует использовать `cron`
+Например запуск скрипта каждый час:
+```
+0 * * * * cd parsing_opencve && python3 parsing_opencve/main.py 
+```
+
