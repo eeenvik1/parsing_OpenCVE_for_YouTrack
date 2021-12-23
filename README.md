@@ -6,17 +6,13 @@ remove_repetitions.py - скрипт, который удаляет повтор
 changing_issues.py - скрипт, который обновляет задачи на основе парсинга сайта OpenCVE
 ```
 
-## Install
-Для установки запустить 
-```pip3 install -r requirements.txt```
-
 ## Usage
 Перед началом работы необходимо создать файл `.env` и добавить в него необходимые ссылки и креды.
 
 Создать `.env` файл
 
 ```sh
-touch .env
+touch parsing_OpenCVE_for_YouTrack/app/.env
 ```
 
 Добавить креды и ссылки в `.env`
@@ -35,17 +31,20 @@ URL_GET_VERSIONS = '<URL_GET_VERSIONS>'
 MAIN_URL = "<MAIN_URL>'
 ```
 
-Запуск скрипта
-```
-python3 main.py
+## Install
+Для установки запустить
+```shell
+git clone https://github.com/eeenvik1/parsing_OpenCVE_for_YouTrack.git
+cd parsing_OpenCVE_for_YouTrack
+docker build -t <SET_IMAGE_NAME> .
+docker run --name <SET_CONTAINER_NAME> -e PYTHONUNBUFFERED=1 <IMAGE_NAME>
 ```
 
+## Usage
+```shell
+docker start <CONTAINER_NAME>
+```
 
-Для автоматической работы скрипта следует использовать `cron`
-Например запуск скрипта каждый час:
-```
-0 * * * * cd parsing_opencve && python3 parsing_opencve/main.py 
-```
 
 ## Example
 Пример работы скрипта main.py
