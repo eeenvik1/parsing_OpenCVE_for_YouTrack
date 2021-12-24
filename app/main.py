@@ -6,6 +6,7 @@ import urllib3
 from cpe import CPE
 import nvdlib
 import ast
+import re
 from dotenv import dotenv_values
 config = dotenv_values(".env")
 
@@ -329,9 +330,14 @@ if __name__ == '__main__':
             if index != -1:
                 repeat_list.append(item)
                 
+    buff_list = []
+    for item in repeat_list:
+        regex = re.search(r'CVE-\d{4}-\d{4,6}', item)
+        buff_list.append(str(regex.group()))
+
     vuln_list = []
     for item in cve_line:
-        if item not in repeat_list:
+        if item not in buff_list:
             vuln_list.append(item)
 
     for cve in vuln_list:
