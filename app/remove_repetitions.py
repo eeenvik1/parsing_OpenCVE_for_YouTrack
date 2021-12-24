@@ -1,4 +1,5 @@
 import requests
+from dotenv import dotenv_values
 config = dotenv_values(".env")
 
 YOU_TRACK_TOKEN = config.get("YOU_TRACK_TOKEN")
