@@ -6,6 +6,8 @@ import urllib3
 from cpe import CPE
 import nvdlib
 import ast
+import re
+from dotenv import dotenv_values
 config = dotenv_values(".env")
 
 
@@ -315,14 +317,21 @@ headers = {
 list_summary = requests.get(main_url, headers=headers).json() # Получение задач с YouTrack
 cve_line = parsing_opencve() # Получение списка новых cve с сайта opencve.io
 
+buff_cve_list = []
+buff_id_list = []
+for i in range(len(list_summary)):
+    regex = re.search(r'CVE-\d{4}-\d{4,6}', str(list_summary[i]['summary']))
+    if regex != None:
+        buff_cve_list.append(str(regex.group()))
+        buff_id_list.append(list_summary[i]['id'])
+
 id_list = []
 cve_list = []
 for item in cve_line:
-    for i in range(len(list_summary)):
-        if item in list_summary[i]['summary']:
+    for i in range(len(buff_cve_list)):
+        if item == buff_cve_list[i]:
             cve_list.append(item)
-            id_list.append(list_summary[i]['id'])
-
+            id_list.append(buff_id_list[i])
 
 for i in range(len(cve_list)):
     print(f'{i+1} / {len(cve_list)} - {get_cve_data(cve_list[i], id_list[i])}')
