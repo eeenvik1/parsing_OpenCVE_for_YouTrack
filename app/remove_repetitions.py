@@ -36,6 +36,8 @@ for n, name in enumerate(repeat_list, start = 1):
         "Authorization": "Bearer {}".format(YOU_TRACK_TOKEN),
         "Content-Type": "application/json"
     }
-    requests.delete(URL1, headers=headers)
-    print(f'{n} / {len(repeat_list)}')
-
+    delete = requests.delete(URL1, headers=headers)
+    if delete.status_code == 200:
+        print(f'{n} / {len(repeat_list)} - OK')
+    else:
+        print(f'{n} / {len(repeat_list)} - {delete.json()}')
