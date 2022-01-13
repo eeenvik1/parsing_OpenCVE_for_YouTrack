@@ -7,7 +7,8 @@ from cpe import CPE
 import nvdlib
 import ast
 import re
-from dotenv import dotenv_values
+import smtplib
+from email.message import EmailMessage
 config = dotenv_values(".env")
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -15,10 +16,10 @@ YOU_TRACK_TOKEN = config.get("YOU_TRACK_TOKEN")
 
 
 def parsing_opencve():
-    URL1 = config.get("URL1_VAL")
-    URL = config.get("URL_VAL")
-    USERNAME = config.get("USERNAME_VAL")
-    PASSWORD = config.get("PASSWORD_VAL")
+    URL1 = 'https://www.opencve.io/login/'
+    URL = 'https://www.opencve.io/login'
+    USERNAME = 'eeenvik1'
+    PASSWORD = '!Qwerty65432'
     csrf_token = ''
     s = requests.Session()
     response = s.get(URL1)
@@ -41,10 +42,9 @@ def parsing_opencve():
         headers={'referer': 'https://www.opencve.io/login'},
         verify=False
     )
-
     # Get new CVE
     cve_line = []
-    for page_num in range(1, 10): #pagination
+    for page_num in range(1, 10):
         pagination = f'https://www.opencve.io/?page={page_num}'
         resp = s.get(pagination)
         parse = BeautifulSoup(resp.text, 'lxml')
@@ -52,9 +52,12 @@ def parsing_opencve():
             index = cve.text.find('has changed')
             if index == -1:
                 cve_line.append(cve.text.replace(' is a new CVE', ''))
-                
+
+    no_cve_line = []
+    for clear in cve_line:
+        no_cve_line.append(clear[:-1])
     cve_line_no_replic = []
-    for item in cve_line:
+    for item in no_cve_line:
         if item not in cve_line_no_replic:
             cve_line_no_replic.append(item)
     return cve_line_no_replic
