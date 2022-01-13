@@ -308,37 +308,61 @@ def get_cve_data(cve):
     #print(request_payload) #DEBUG
     print(requests.post(URL, headers=headers, json=request_payload).json()) # Выгрузка инфы о cve в YouTrack
 
-if __name__ == '__main__':
-    # MAIN
-    URL = config.get("MAIN_URL")
-    headers = {
-        "Accept": "application/json",
-        "Authorization": "Bearer {}".format(YOU_TRACK_TOKEN),
-        "Content-Type": "application/json"
-    }
-    list_summary = requests.get(URL, headers=headers).json() # Получение последних 500 задач с YouTrack
-    cve_line = parsing_opencve() # Получение списка новых cve с сайта opencve.io
-    # Удаление cve, информация о которых уже есть в YouTrack
-    sum_list = []
-    for n in range(len(list_summary)):
-        sum_list.append(list_summary[n]['summary'])
-        
-    repeat_list = []
-    for item in cve_line:
-        for n in sum_list:
-            index = n.find(item)
-            if index != -1:
-                repeat_list.append(item)
-                
-    buff_list = []
-    for item in repeat_list:
-        regex = re.search(r'CVE-\d{4}-\d{4,6}', item)
-        buff_list.append(str(regex.group()))
+#-----------------------------------------------MAIN--------------------------------------------------------------------
 
-    vuln_list = []
-    for item in cve_line:
-        if item not in buff_list:
-            vuln_list.append(item)
+URL = config.get("URL")
+headers = {
+    "Accept": "application/json",
+    "Authorization": "Bearer {}".format(YOU_TRACK_TOKEN),
+    "Content-Type": "application/json"
+}
+list_summary = requests.get(URL, headers=headers).json() # Получение последних 500 задач с YouTrack
+cve_line = parsing_opencve() # Получение списка новых cve с сайта opencve.io
+# Удаление cve, информация о которых уже есть в YouTrack
+sum_list = []
+for n in range(len(list_summary)):
+    item = list_summary[n]['summary']
+    regex = re.search(r'CVE-\d{4}-\d{4,6}', item)
+    if regex != None:
+        sum_list.append(str(regex.group()))
 
-    for cve in vuln_list:
-        get_cve_data(cve)
+repeat_list = []
+for item in cve_line:
+    for n in sum_list:
+        if item == n:
+            repeat_list.append(item)
+
+vuln_list = []
+for item in cve_line:
+    if item not in repeat_list:
+        vuln_list.append(item)
+
+chang = []
+for cve in vuln_list:
+    chang.append(get_cve_data(cve))
+
+alert = []
+for item in chang:
+    if item != None:
+        alert.append(item)
+		
+#--------------------------------------------------MAIL_ALERT-----------------------------------------------------------
+if len(alert) > 0:
+    EMAIL_HOST = config.get("EMAIL_HOST")
+    EMAIL_PORT = config.get("EMAIL_PORT")
+    EMAIL_HOST_PASSWORD = config.get("EMAIL_HOST_PASSWORD")
+    EMAIL_HOST_USER = config.get("EMAIL_HOST_USER")
+    msg = EmailMessage()
+    msg['Subject'] = 'OpenCVE'
+    msg['From'] = EMAIL_HOST_USER
+    msg['To'] = config.get("MSG_TO")
+    apchihba = ''
+    for item in alert:
+        apchihba += item + '\n'
+    body = f'Заведено {len(alert)} уязвимостей \n {apchihba}'
+    msg.set_content(body)
+    msg.set_content(body)
+    smtp_server = smtplib.SMTP_SSL(host=EMAIL_HOST, port=EMAIL_PORT)
+    smtp_server.login(user=EMAIL_HOST_USER, password=EMAIL_HOST_PASSWORD)
+    smtp_server.send_message(msg)
+    print('Email sended {}'.format(msg['Subject']))
