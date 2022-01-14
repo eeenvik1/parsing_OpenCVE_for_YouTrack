@@ -18,8 +18,8 @@ YOU_TRACK_TOKEN = config.get("YOU_TRACK_TOKEN")
 def parsing_opencve():
     URL1 = 'https://www.opencve.io/login/'
     URL = 'https://www.opencve.io/login'
-    USERNAME = 'eeenvik1'
-    PASSWORD = '!Qwerty65432'
+    USERNAME = config.get("USERNAME")
+    PASSWORD = config.get("PASSWORD")
     csrf_token = ''
     s = requests.Session()
     response = s.get(URL1)
