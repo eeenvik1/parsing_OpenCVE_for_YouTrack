@@ -50,6 +50,8 @@ docker run --name <SET_CONTAINER_NAME> -e PYTHONUNBUFFERED=1 <IMAGE_NAME>
 docker start <CONTAINER_NAME>
 ```
 
+## Update
+Добавлен скрипт `adding_epss.py` который позволяет добавлять epss скоринг в процентах.
 
 ## Example
 Пример работы скрипта main.py
