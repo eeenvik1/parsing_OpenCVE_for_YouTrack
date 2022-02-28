@@ -15,7 +15,32 @@ config = dotenv_values(".env")
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 YOU_TRACK_TOKEN = config.get("YOU_TRACK_TOKEN")
 
+#parse github/nu11secur1ty----------------------------------------------------------------------------------------------
+def get_exploit_info(cve):
+    link = 'https://github.com/nu11secur1ty/CVE-mitre'
+    link_2 = 'https://github.com/nu11secur1ty/CVE-mitre/tree/main/2022'
+    default_link = ''
+    poc_cve_list = []
+    r = requests.get(link)
+    soup = BeautifulSoup(r.text, "html.parser")
+    for cve_id in soup.find_all("span", class_="css-truncate css-truncate-target d-block width-fit"):
+        regex = re.findall(r'CVE-\d{4}-\d{4,8}', cve_id.text)
+        if regex:
+            poc_cve_list.append(str(regex[0]))
 
+    r = requests.get(link_2)
+    soup = BeautifulSoup(r.text, "html.parser")
+    for cve_id in soup.find_all("span", class_="css-truncate css-truncate-target d-block width-fit"):
+        regex = re.findall(r'CVE-\d{4}-\d{4,8}', cve_id.text)
+        if regex:
+            poc_cve_list.append(str(regex[0]))
+
+    for item in poc_cve_list:
+        if cve == item:
+            default_link = f'https://github.com/nu11secur1ty/CVE-mitre/tree/main/{cve}'
+    return default_link
+
+#parse opencve.io---------------------------------------------------------------------------------------------------------
 def parsing_opencve():
     URL1 = 'https://www.opencve.io/login/'
     URL = 'https://www.opencve.io/login'
@@ -148,6 +173,8 @@ def get_cve_data(cve):
         links.append(t.url)
         if 'Exploit' in t.tags:
             exploit_links.append(t.url)
+    if get_exploit_info(cve):
+        exploit_links.append(get_exploit_info(cve))
     cpe_for_product_vendors = []
     if cpe_nodes:
         for conf in cve_cpe_nodes:
